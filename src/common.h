@@ -78,3 +78,4 @@ extern DynamicJsonDocument jsonDoc;
 extern unsigned int lastNTPUpdate;
 extern unsigned int noInternetSince;
 extern bool isInitialLoading;
+extern unsigned int timeUpdatedLast;

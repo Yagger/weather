@@ -22,6 +22,7 @@ bool showConfigScreen = false;
 unsigned int lastNTPUpdate = 0;
 unsigned int noInternetSince = 0;
 bool isInitialLoading = true;
+unsigned int timeUpdatedLast = 0;
 
 Conf conf;
 LedMatrix mx(ROWS, COLS, 5000);

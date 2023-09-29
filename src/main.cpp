@@ -41,7 +41,6 @@ void loop()
   wm.process();
   m = millis();
   server.handleClient();
-  timeClient.update();
   b1.loop();
   b2.loop();
   b3.loop();
@@ -49,7 +48,11 @@ void loop()
   mx.setFont(&Org_01);
   mx.setBrightness(brightness);
 
-  Serial.println(WiFi.status());
+  if (m - timeUpdatedLast > 1000 * 60 * 60)
+  {
+    timeUpdatedLast = m;
+    timeClient.update();
+  }
   if (WiFi.status() == WL_CONNECTED)
   {
     noInternetSince = 0;
