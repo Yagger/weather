@@ -39,6 +39,7 @@ void loadData()
     timeClient.setTimeOffset(jsonDoc["CityInfo"]["Offset"]);
     jsonFetchError = "";
     jsonFetchErrorSince = 0;
+    isInitialLoading = false;
     // Free resources
     http.end();
 }

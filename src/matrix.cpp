@@ -32,5 +32,5 @@ void warning(String text, bool scroll)
 
 void error(String text, bool scroll)
 {
-    textOnBg(text, mx.hsv(0, 255, 255), mx.hsv(0, 150, 255), scroll);
+    textOnBg(text, mx.hsv(0, 255, 255), 0, scroll);
 }

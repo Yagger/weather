@@ -1,7 +1,7 @@
 #include <common.h>
 
 unsigned int m = 0;
-String const initialCityID = "unknown";
+String const configStatusInitialized = "initialized";
 int brightness = 255;
 int groupBy = 1;
 int groupByLast = 0;
@@ -28,7 +28,7 @@ Conf conf;
 LedMatrix mx(ROWS, COLS, 5000);
 WiFiManager wm;
 ESP8266WebServer server(80);
-DynamicJsonDocument jsonDoc(1024 * 4);
+DynamicJsonDocument jsonDoc(1024 * 32);
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org");
 

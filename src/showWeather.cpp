@@ -6,7 +6,7 @@ void renderWeather();
 
 void showWeather()
 {
-    if (m - showTempModeLast > 5000)
+    if ((showTempMode == 0 && m - showTempModeLast > 5000) || (showTempMode != 0 && m - showTempModeLast > 2000))
     {
         showTempModeLast = m;
         showTempMode++;
@@ -15,7 +15,7 @@ void showWeather()
             showTempMode = 0;
         }
     }
-    if (m - groupByLast > 60000)
+    if (m - groupByLast > 30000)
     {
         groupByLast = m;
         if (groupBy != 3)
@@ -211,6 +211,10 @@ void renderWeather()
             color = mx.hsv(40, 0, 220);
         }
         else if (sky == "cloudy")
+        {
+            color = mx.hsv(40, 0, 100);
+        }
+        else if (sky != "night")
         {
             color = mx.hsv(40, 0, 100);
         }

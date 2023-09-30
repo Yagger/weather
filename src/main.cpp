@@ -1,5 +1,7 @@
 #include <common.h>
 
+String initialCityID = "unknown";
+
 void setup()
 {
   // Serial.begin(115200);
@@ -7,10 +9,11 @@ void setup()
   EEPROM.begin(EEPROM_SIZE);
   EEPROM.get(0, conf);
 
-  if ((String)conf.cityID == "" || strlen(conf.cityID) == 0)
+  if ((String)conf.status != configStatusInitialized)
   {
     // initialize config
-    initialCityID.toCharArray(conf.cityID, initialCityID.length() + 1);
+    initialCityID.toCharArray(conf.cityID, 255);
+    configStatusInitialized.toCharArray(conf.status, 255);
     EEPROM.put(0, conf);
   }
   EEPROM.end();
@@ -53,19 +56,21 @@ void loop()
     timeUpdatedLast = m;
     timeClient.update();
   }
+
   if (WiFi.status() == WL_CONNECTED)
   {
     noInternetSince = 0;
-    mx.clear();
-    if ((String)conf.cityID == "unknown" || showConfigScreen)
+    if ((String)conf.cityID == initialCityID || showConfigScreen)
     {
+      mx.clear();
       info2(WiFi.localIP().toString(), true);
     }
     else
     {
-      if (jsonFetchError != "" && m - jsonFetchErrorSince > 30000)
+      if (jsonFetchError != "" && (isInitialLoading || m - jsonFetchErrorSince > 60000))
       {
-        error("Error: " + jsonFetchError, false);
+        mx.clear();
+        error("Error: " + jsonFetchError, true);
         mx.show();
         if (m - jsonLastFetched >= 5000)
         {
@@ -81,7 +86,6 @@ void loop()
           mx.show();
         }
         loadData();
-        isInitialLoading = false;
       }
       else
       {
@@ -95,15 +99,10 @@ void loop()
     {
       noInternetSince = m;
     }
-    else if (m - noInternetSince > 30000)
+    else if (isInitialLoading || m - noInternetSince > 30000)
     {
       mx.clear();
       info1("Connect to '" + (String)apName + "' WiFi network", true);
-    }
-    else if (isInitialLoading)
-    {
-      mx.clear();
-      info1("Loading", false);
     }
   }
 

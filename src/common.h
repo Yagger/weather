@@ -24,6 +24,7 @@
 
 struct Conf
 {
+    char status[255];
     char cityID[255];
 };
 
@@ -54,7 +55,7 @@ extern bool timeSUp;
 extern int tempH;
 extern int showTempMode;
 extern unsigned int showTempModeLast;
-extern String const initialCityID;
+extern String const configStatusInitialized;
 extern LedMatrix mx;
 extern WiFiManager wm;
 extern ESP8266WebServer server;
