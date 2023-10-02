@@ -259,11 +259,11 @@ void renderWeather()
         }
         // Wind
         wind = jsonDoc["Data"][i]["Wind"];
-        if (wind > 5)
+        if (wind > 6)
         {
             mx.px(i, 15, mx.hsv(80, 100, 255));
         }
-        if (wind > 10)
+        if (wind > 9)
         {
             mx.px(i, 15, mx.hsv(0, 100, 255));
         }
