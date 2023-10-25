@@ -2,13 +2,13 @@
 
 unsigned int m = 0;
 String const configStatusInitialized = "initialized";
-int brightness = 255;
+int brightness = 150;
 int groupBy = 1;
 int groupByLast = 0;
 int timeH = 0;
-int timeS = 100;
+int timeS = 50;
 bool timeSUp = false;
-int tempH = 200;
+int tempH = 245;
 int showTempMode = 0;
 unsigned int showTempModeLast = 0;
 char const *apName = "WT";
@@ -29,6 +29,8 @@ LedMatrix mx(ROWS, COLS, 5000);
 WiFiManager wm;
 ESP8266WebServer server(80);
 DynamicJsonDocument jsonDoc(1024 * 32);
+DynamicJsonDocument jsonDoc1Hour(1024 * 32);
+DynamicJsonDocument jsonDoc3Hours(1024 * 32);
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org");
 

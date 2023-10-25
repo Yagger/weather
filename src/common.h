@@ -29,6 +29,7 @@ struct Conf
 };
 
 void loadData();
+void loadData2(DynamicJsonDocument *jsonDoc_, unsigned int hours_);
 void showWeather();
 void checkReset();
 void checkConfigure();
@@ -76,6 +77,8 @@ extern WiFiUDP ntpUDP;
 extern NTPClient timeClient;
 extern const long utcOffset;
 extern DynamicJsonDocument jsonDoc;
+extern DynamicJsonDocument jsonDoc1Hour;
+extern DynamicJsonDocument jsonDoc3Hours;
 extern unsigned int lastNTPUpdate;
 extern unsigned int noInternetSince;
 extern bool isInitialLoading;

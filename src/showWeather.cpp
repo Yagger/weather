@@ -204,19 +204,19 @@ void renderWeather()
         uint16_t color = 0;
         if (sky == "sunny")
         {
-            color = mx.hsv(40, 100, 255);
+            color = mx.hsv(0, 0, 255);
         }
         else if (sky == "fair")
         {
-            color = mx.hsv(40, 0, 220);
+            color = mx.hsv(0, 0, 200);
         }
         else if (sky == "cloudy")
         {
-            color = mx.hsv(40, 0, 100);
+            color = mx.hsv(0, 0, 125);
         }
         else if (sky != "night")
         {
-            color = mx.hsv(40, 0, 100);
+            color = mx.hsv(0, 0, 125);
         }
         mx.px(i, 5, color);
         // Precip

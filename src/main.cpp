@@ -37,6 +37,7 @@ void setup()
   server.begin();
 
   timeClient.begin();
+  timeClient.update();
 }
 
 void loop()
@@ -75,6 +76,8 @@ void loop()
         if (m - jsonLastFetched >= 5000)
         {
           loadData();
+          loadData2(&jsonDoc1Hour, 1);
+          loadData2(&jsonDoc3Hours, 3);
         }
       }
       else if (jsonLastFetched == 0 || m - jsonLastFetched >= jsonFetchPeriod)
@@ -86,6 +89,8 @@ void loop()
           mx.show();
         }
         loadData();
+        loadData2(&jsonDoc1Hour, 1);
+        loadData2(&jsonDoc3Hours, 3);
       }
       else
       {
