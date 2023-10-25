@@ -4,6 +4,8 @@ void renderClock(int h1, int h2, int m1, int m2, int t1, int t2, int temp, int t
 uint16_t tempColor(int temp);
 void renderWeather();
 
+DynamicJsonDocument *jsonDoc;
+
 void showWeather()
 {
     if ((showTempMode == 0 && m - showTempModeLast > 5000) || (showTempMode != 0 && m - showTempModeLast > 2000))
@@ -26,15 +28,23 @@ void showWeather()
         {
             groupBy = 1;
         }
-        jsonLastFetched = 0;
     }
-    int currentTemp = jsonDoc["Data"][0]["Temp"];
+    // Serial.println(groupBy);
+    if (groupBy == 1)
+    {
+        jsonDoc = &jsonDoc1Hour;
+    }
+    else
+    {
+        jsonDoc = &jsonDoc3Hours;
+    }
+    int currentTemp = (*jsonDoc)["Data"][0]["Temp"];
     int maxTemp = currentTemp;
     int minTemp = currentTemp;
     int temp = currentTemp;
     for (int i = 0; i < COLS; i++)
     {
-        temp = jsonDoc["Data"][i]["Temp"];
+        temp = (*jsonDoc)["Data"][i]["Temp"];
         if (temp > maxTemp)
         {
             maxTemp = temp;
@@ -65,8 +75,8 @@ void showWeather()
     unsigned m1 = (minutes / 10U) % 10;
     // unsigned s2 = (seconds / 1U) % 10;
     // unsigned s1 = (seconds / 10U) % 10;
-    unsigned t2 = (temp / 1U) % 10;
-    unsigned t1 = (temp / 10U) % 10;
+    unsigned t2 = (abs(temp) / 1U) % 10;
+    unsigned t1 = (abs(temp) / 10U) % 10;
     renderClock(h1, h2, m1, m2, t1, t2, temp, showTempMode, currentTemp);
     renderWeather();
 }
@@ -113,6 +123,12 @@ void renderClock(int h1, int h2, int m1, int m2, int t1, int t2, int temp, int t
         mx.px(21, 1, color);
         mx.px(22, 0, color);
         mx.px(23, 1, color);
+        if (temp < 0)
+        {
+            mx.px(21, 3, color);
+            mx.px(22, 3, color);
+            mx.px(23, 3, color);
+        }
         mx.setCursor(25, 5);
     }
     else
@@ -120,6 +136,12 @@ void renderClock(int h1, int h2, int m1, int m2, int t1, int t2, int temp, int t
         mx.px(21, 3, color);
         mx.px(22, 4, color);
         mx.px(23, 3, color);
+        if (temp < 0)
+        {
+            mx.px(21, 1, color);
+            mx.px(22, 1, color);
+            mx.px(23, 1, color);
+        }
         mx.setCursor(25, 5);
     }
     mx.print(String(t1));
@@ -157,19 +179,19 @@ uint16_t tempColor(int temp)
 void renderWeather()
 {
     mx.fillRect(0, 5, COLS, 11, 0);
-    float temp = jsonDoc["Data"][0]["Temp"];
+    float temp = (*jsonDoc)["Data"][0]["Temp"];
     float maxTemp = temp;
     float minTemp = temp;
-    float wind = jsonDoc["Data"][0]["Wind"];
+    float wind = (*jsonDoc)["Data"][0]["Wind"];
     float maxWind = wind;
     float minWind = wind;
-    float precip = jsonDoc["Data"][0]["Precip"];
+    float precip = (*jsonDoc)["Data"][0]["Precip"];
     float maxPrecip = precip;
     float minPrecip = precip;
     float tempFrac = 0;
     for (int i = 0; i < COLS; i++)
     {
-        temp = jsonDoc["Data"][i]["Temp"];
+        temp = (*jsonDoc)["Data"][i]["Temp"];
         if (temp > maxTemp)
         {
             maxTemp = temp;
@@ -178,7 +200,7 @@ void renderWeather()
         {
             minTemp = temp;
         }
-        wind = jsonDoc["Data"][i]["Wind"];
+        wind = (*jsonDoc)["Data"][i]["Wind"];
         if (wind > maxWind)
         {
             maxWind = wind;
@@ -187,7 +209,7 @@ void renderWeather()
         {
             minWind = wind;
         }
-        precip = jsonDoc["Data"][i]["Precip"];
+        precip = (*jsonDoc)["Data"][i]["Precip"];
         if (precip > maxPrecip)
         {
             maxPrecip = precip;
@@ -200,7 +222,7 @@ void renderWeather()
     for (int i = 0; i < COLS; i++)
     {
         // Sky
-        String sky = jsonDoc["Data"][i]["Sky"];
+        String sky = (*jsonDoc)["Data"][i]["Sky"];
         uint16_t color = 0;
         if (sky == "sunny")
         {
@@ -220,7 +242,7 @@ void renderWeather()
         }
         mx.px(i, 5, color);
         // Precip
-        precip = jsonDoc["Data"][i]["Precip"];
+        precip = (*jsonDoc)["Data"][i]["Precip"];
         if (precip > 0)
         {
             mx.px(i, 6, mx.hsv(153, 255, 255));
@@ -234,7 +256,7 @@ void renderWeather()
             mx.px(i, 8, mx.hsv(153, 255, 255));
         }
         // Temp
-        temp = jsonDoc["Data"][i]["Temp"];
+        temp = (*jsonDoc)["Data"][i]["Temp"];
         tempFrac = (maxTemp - minTemp) / 6;
         mx.px(i, 14, mx.hsv(tempH, 170, 255));
         if (temp > minTemp + (tempFrac * 1.5))
@@ -258,16 +280,19 @@ void renderWeather()
             mx.px(i, 9, mx.hsv(tempH, 255, 255));
         }
         // Wind
-        wind = jsonDoc["Data"][i]["Wind"];
-        if (wind > 6)
+        wind = (*jsonDoc)["Data"][i]["Wind"];
+        if (wind > 5)
+        // if (wind > 2)
         {
-            mx.px(i, 15, mx.hsv(80, 100, 255));
+            mx.px(i, 15, mx.hsv(0, 40, 200));
         }
         if (wind > 9)
+        // if (wind > 4)
         {
-            mx.px(i, 15, mx.hsv(0, 100, 255));
+            mx.px(i, 15, mx.hsv(0, 75, 210));
         }
         if (wind > 15)
+        // if (wind > 6)
         {
             mx.px(i, 15, mx.hsv(0, 255, 255));
         }

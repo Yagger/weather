@@ -26,10 +26,12 @@ struct Conf
 {
     char status[255];
     char cityID[255];
+    int tempH;
+    int timeH;
+    int timeS;
 };
 
-void loadData();
-void loadData2(DynamicJsonDocument *jsonDoc_, unsigned int hours_);
+void loadData(DynamicJsonDocument *jsonDoc_, unsigned int hours_);
 void showWeather();
 void checkReset();
 void checkConfigure();
@@ -54,6 +56,7 @@ extern int timeH;
 extern int timeS;
 extern bool timeSUp;
 extern int tempH;
+extern unsigned int saveColorsInConfAt;
 extern int showTempMode;
 extern unsigned int showTempModeLast;
 extern String const configStatusInitialized;
@@ -76,7 +79,6 @@ extern bool showConfigScreen;
 extern WiFiUDP ntpUDP;
 extern NTPClient timeClient;
 extern const long utcOffset;
-extern DynamicJsonDocument jsonDoc;
 extern DynamicJsonDocument jsonDoc1Hour;
 extern DynamicJsonDocument jsonDoc3Hours;
 extern unsigned int lastNTPUpdate;

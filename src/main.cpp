@@ -2,9 +2,19 @@
 
 String initialCityID = "unknown";
 
+void saveColorConf()
+{
+  conf.tempH = tempH;
+  conf.timeH = timeH;
+  conf.timeS = timeS;
+  EEPROM.begin(EEPROM_SIZE);
+  EEPROM.put(0, conf);
+  EEPROM.end();
+}
+
 void setup()
 {
-  // Serial.begin(115200);
+  Serial.begin(115200);
 
   EEPROM.begin(EEPROM_SIZE);
   EEPROM.get(0, conf);
@@ -14,7 +24,18 @@ void setup()
     // initialize config
     initialCityID.toCharArray(conf.cityID, 255);
     configStatusInitialized.toCharArray(conf.status, 255);
+    conf.tempH = tempH;
+    conf.timeH = timeH;
+    conf.timeS = timeS;
     EEPROM.put(0, conf);
+  }
+  else
+  {
+    // Uncomment to reset colors back to initial greenish
+    saveColorConf();
+    tempH = conf.tempH;
+    timeH = conf.timeH;
+    timeS = conf.timeS;
   }
   EEPROM.end();
 
@@ -58,6 +79,12 @@ void loop()
     timeClient.update();
   }
 
+  if (saveColorsInConfAt != 0 && m > saveColorsInConfAt)
+  {
+    saveColorsInConfAt = 0;
+    saveColorConf();
+  }
+
   if (WiFi.status() == WL_CONNECTED)
   {
     noInternetSince = 0;
@@ -75,9 +102,14 @@ void loop()
         mx.show();
         if (m - jsonLastFetched >= 5000)
         {
-          loadData();
-          loadData2(&jsonDoc1Hour, 1);
-          loadData2(&jsonDoc3Hours, 3);
+          loadData(&jsonDoc1Hour, 1);
+          loadData(&jsonDoc3Hours, 3);
+          // Serial.print("Data 1 loaded: ");
+          // String temp1 = jsonDoc1Hour["Data"][0]["Sky"];
+          // Serial.println(temp1);
+          // Serial.print("Data 3 loaded: ");
+          // String temp3 = jsonDoc3Hours["Data"][0]["Sky"];
+          // Serial.println(temp3);
         }
       }
       else if (jsonLastFetched == 0 || m - jsonLastFetched >= jsonFetchPeriod)
@@ -88,9 +120,14 @@ void loop()
           info1("Loading", false);
           mx.show();
         }
-        loadData();
-        loadData2(&jsonDoc1Hour, 1);
-        loadData2(&jsonDoc3Hours, 3);
+        loadData(&jsonDoc1Hour, 1);
+        loadData(&jsonDoc3Hours, 3);
+        // Serial.print("Data 1 loaded: ");
+        // String temp1 = jsonDoc1Hour["Data"][0]["Sky"];
+        // Serial.println(temp1);
+        // Serial.print("Data 3 loaded: ");
+        // String temp3 = jsonDoc3Hours["Data"][0]["Sky"];
+        // Serial.println(temp3);
       }
       else
       {

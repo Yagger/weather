@@ -78,7 +78,7 @@ void checkPresses()
     {
         if (timeSUp)
         {
-            timeS += 5;
+            timeS += 10;
             if (timeS > 255)
             {
                 timeS = 255;
@@ -88,7 +88,7 @@ void checkPresses()
         }
         else
         {
-            timeS -= 5;
+            timeS -= 10;
             if (timeS < 100)
             {
                 timeSUp = true;
@@ -99,6 +99,7 @@ void checkPresses()
         {
             timeH = 0;
         }
+        saveColorsInConfAt = m + 5000;
     }
     if (b4.isDown())
     {
@@ -107,6 +108,7 @@ void checkPresses()
         {
             tempH = 0;
         }
+        saveColorsInConfAt = m + 5000;
         // Serial.println(tempH);
     }
 }
