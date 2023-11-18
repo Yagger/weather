@@ -258,26 +258,26 @@ void renderWeather()
         // Temp
         temp = (*jsonDoc)["Data"][i]["Temp"];
         tempFrac = (maxTemp - minTemp) / 6;
-        mx.px(i, 14, mx.hsv(tempH, 170, 255));
+        mx.px(i, 14, mx.hsv(tempH, tempS - (17*5), 255));
         if (temp > minTemp + (tempFrac * 1.5))
         {
-            mx.px(i, 13, mx.hsv(tempH, 187, 255));
+            mx.px(i, 13, mx.hsv(tempH, tempS - (17*4), 255));
         }
         if (temp > minTemp + (tempFrac * 2.5))
         {
-            mx.px(i, 12, mx.hsv(tempH, 204, 255));
+            mx.px(i, 12, mx.hsv(tempH, tempS - (17*3), 255));
         }
         if (temp > minTemp + (tempFrac * 3.5))
         {
-            mx.px(i, 11, mx.hsv(tempH, 221, 255));
+            mx.px(i, 11, mx.hsv(tempH, tempS - (17*2), 255));
         }
         if (temp > minTemp + (tempFrac * 4.5))
         {
-            mx.px(i, 10, mx.hsv(tempH, 238, 255));
+            mx.px(i, 10, mx.hsv(tempH, tempS - 17, 255));
         }
         if (temp > minTemp + (tempFrac * 5.5))
         {
-            mx.px(i, 9, mx.hsv(tempH, 255, 255));
+            mx.px(i, 9, mx.hsv(tempH, tempS, 255));
         }
         // Wind
         wind = (*jsonDoc)["Data"][i]["Wind"];

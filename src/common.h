@@ -27,6 +27,7 @@ struct Conf
     char status[255];
     char cityID[255];
     int tempH;
+    int tempS;
     int timeH;
     int timeS;
 };
@@ -56,6 +57,8 @@ extern int timeH;
 extern int timeS;
 extern bool timeSUp;
 extern int tempH;
+extern int tempS;
+extern bool tempSUp;
 extern unsigned int saveColorsInConfAt;
 extern int showTempMode;
 extern unsigned int showTempModeLast;

@@ -5,6 +5,7 @@ String initialCityID = "unknown";
 void saveColorConf()
 {
   conf.tempH = tempH;
+  conf.tempS = tempS;
   conf.timeH = timeH;
   conf.timeS = timeS;
   EEPROM.begin(EEPROM_SIZE);
@@ -25,6 +26,7 @@ void setup()
     initialCityID.toCharArray(conf.cityID, 255);
     configStatusInitialized.toCharArray(conf.status, 255);
     conf.tempH = tempH;
+    conf.tempS = tempS;
     conf.timeH = timeH;
     conf.timeS = timeS;
     EEPROM.put(0, conf);
@@ -32,8 +34,10 @@ void setup()
   else
   {
     // Uncomment to reset colors back to initial greenish
-    saveColorConf();
+    // saveColorConf();
+
     tempH = conf.tempH;
+    tempS = conf.tempS;
     timeH = conf.timeH;
     timeS = conf.timeS;
   }
