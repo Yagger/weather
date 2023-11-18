@@ -188,7 +188,7 @@ void renderWeather()
     float precip = (*jsonDoc)["Data"][0]["Precip"];
     float maxPrecip = precip;
     float minPrecip = precip;
-    float tempFrac = 0;
+    float tempDeltaPerPixel = 0;
     for (int i = 0; i < COLS; i++)
     {
         temp = (*jsonDoc)["Data"][i]["Temp"];
@@ -257,25 +257,28 @@ void renderWeather()
         }
         // Temp
         temp = (*jsonDoc)["Data"][i]["Temp"];
-        tempFrac = (maxTemp - minTemp) / 6;
+        tempDeltaPerPixel = (maxTemp - minTemp) / 6;
+        if (tempDeltaPerPixel < 1) {
+            tempDeltaPerPixel = 1;
+        }
         mx.px(i, 14, mx.hsv(tempH, tempS - (17*5), 255));
-        if (temp > minTemp + (tempFrac * 1.5))
+        if (temp >= minTemp + tempDeltaPerPixel)
         {
             mx.px(i, 13, mx.hsv(tempH, tempS - (17*4), 255));
         }
-        if (temp > minTemp + (tempFrac * 2.5))
+        if (temp >= minTemp + (tempDeltaPerPixel * 2))
         {
             mx.px(i, 12, mx.hsv(tempH, tempS - (17*3), 255));
         }
-        if (temp > minTemp + (tempFrac * 3.5))
+        if (temp >= minTemp + (tempDeltaPerPixel * 3))
         {
             mx.px(i, 11, mx.hsv(tempH, tempS - (17*2), 255));
         }
-        if (temp > minTemp + (tempFrac * 4.5))
+        if (temp >= minTemp + (tempDeltaPerPixel * 4))
         {
             mx.px(i, 10, mx.hsv(tempH, tempS - 17, 255));
         }
-        if (temp > minTemp + (tempFrac * 5.5))
+        if (temp >= minTemp + (tempDeltaPerPixel * 5))
         {
             mx.px(i, 9, mx.hsv(tempH, tempS, 255));
         }
